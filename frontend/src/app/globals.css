@@ -949,3 +949,77 @@ input:focus-visible {
     animation: none !important;
   }
 }
+
+/* ---------- carrossel de skills ---------- */
+.carousel-viewport {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: visible;
+  padding: 28px 0;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+}
+.carousel-viewport:active {
+  cursor: grabbing;
+}
+.carousel-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.carousel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 28px;
+  flex-shrink: 0;
+  user-select: none;
+}
+.carousel-logo-wrap {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-logo-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  background: var(--glow);
+  opacity: 0;
+  filter: blur(20px);
+  transform: scale(0.8);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  pointer-events: none;
+}
+.carousel-item:hover .carousel-logo-wrap::before {
+  opacity: 0.55;
+  transform: scale(1.2);
+}
+.carousel-logo {
+  position: relative;
+  z-index: 1;
+  object-fit: contain;
+  transition: transform 0.35s var(--ease);
+}
+.carousel-item:hover .carousel-logo {
+  transform: translateY(-3px) scale(1.1);
+}
+.carousel-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  transition: color 0.35s ease;
+  white-space: nowrap;
+}
+.carousel-item:hover .carousel-label {
+  color: var(--ink-2);
+}

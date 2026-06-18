@@ -4,7 +4,6 @@ import type {
   PaginatedResponse,
   Profile,
   Project,
-  Skill,
   SpotifyTrack,
 } from "@/types/portfolio";
 
@@ -25,10 +24,6 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 
 export function getProfile() {
   return apiFetch<PaginatedResponse<Profile>>("/profile/");
-}
-
-export function getSkills() {
-  return apiFetch<PaginatedResponse<Skill>>("/skills/");
 }
 
 export function getProjects() {

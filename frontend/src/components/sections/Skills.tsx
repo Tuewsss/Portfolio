@@ -2,13 +2,9 @@
 
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
-import type { Skill } from "@/types/portfolio";
+import { SkillsCarousel } from "@/components/sections/SkillsCarousel";
 
-interface SkillsProps {
-  skills: Skill[];
-}
-
-export function Skills({ skills }: SkillsProps) {
+export function Skills() {
   const { t } = useLanguage();
 
   return (
@@ -26,12 +22,8 @@ export function Skills({ skills }: SkillsProps) {
           </h2>
         </Reveal>
 
-        <Reveal className="flex flex-wrap gap-2.5">
-          {skills.map((skill) => (
-            <span key={skill.id} className="chip chip-lg">
-              {skill.name}
-            </span>
-          ))}
+        <Reveal>
+          <SkillsCarousel />
         </Reveal>
       </div>
     </section>

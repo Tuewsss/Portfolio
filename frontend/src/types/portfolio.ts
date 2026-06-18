@@ -19,12 +19,6 @@ export interface Project {
   created_at: string;
 }
 
-export interface Skill {
-  id: number;
-  name: string;
-  order: number;
-}
-
 export interface Profile {
   id: number;
   full_name: string;
