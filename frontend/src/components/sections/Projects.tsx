@@ -1,7 +1,7 @@
 "use client";
 
 import { GlassCard } from "@/components/GlassCard";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
 import type { Project } from "@/types/portfolio";
 

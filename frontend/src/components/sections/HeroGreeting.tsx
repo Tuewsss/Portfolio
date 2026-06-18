@@ -1,9 +1,9 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { ScrambleText } from "@/components/ScrambleText";
-import { useVisitor } from "@/components/VisitorProvider";
+import { useVisitor } from "@/components/providers/VisitorProvider";
 import { MAX_VISITOR_NAME_LENGTH, sanitizeVisitorName } from "@/lib/visitor";
 
 export function HeroGreeting() {

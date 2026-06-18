@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GlassCard } from "@/components/GlassCard";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 
 const TIMEZONE = "America/Fortaleza";
 const PLACE_LABEL = "Mãe d'Água, PB · GMT-3";

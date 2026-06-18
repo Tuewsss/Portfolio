@@ -1,6 +1,6 @@
 "use client";
 
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
 import type { Skill } from "@/types/portfolio";
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { HeroGreeting } from "@/components/HeroGreeting";
-import { useLanguage } from "@/components/LanguageProvider";
+import { HeroGreeting } from "@/components/sections/HeroGreeting";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
 import type { Profile } from "@/types/portfolio";
 

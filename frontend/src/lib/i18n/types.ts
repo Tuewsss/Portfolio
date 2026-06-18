@@ -82,4 +82,10 @@ export interface Dictionary {
     namePlaceholder: string;
     pressEnter: string;
   };
+  theme: {
+    selectLabel: string;
+    white: string;
+    dark: string;
+    weather: string;
+  };
 }

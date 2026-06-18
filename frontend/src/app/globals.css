@@ -21,10 +21,170 @@
   --accent-ink: #0060df;
   --green: #34c759;
 
+  /* botões "sólidos" (alto contraste) e o brilho do cursor no glass */
+  --solid-bg: var(--ink);
+  --solid-text: #ffffff;
+  --glass-shine: rgba(255, 255, 255, 0.85);
+  --fill-subtle: rgba(0, 0, 0, 0.045);
+
+  /* aurora (tema branco/dia) */
+  --blob-a: #cfe2ff;
+  --blob-b: #ffe0ec;
+  --blob-c: #d7f5ea;
+  --blob-opacity: 0.5;
+
   --r-lg: 28px;
   --r-md: 20px;
   --r-sm: 14px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- tema escuro ---------- */
+[data-theme="dark"] {
+  --bg: #000000;
+  --ink: #f5f5f7;
+  --ink-2: #a1a1a6;
+  --ink-3: #6e6e73;
+  --line: rgba(255, 255, 255, 0.12);
+
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  --accent: #0a84ff;
+  --accent-ink: #409cff;
+
+  --solid-bg: #f5f5f7;
+  --solid-text: #1d1d1f;
+  --glass-shine: rgba(255, 255, 255, 0.18);
+  --fill-subtle: rgba(255, 255, 255, 0.08);
+
+  --blob-a: #0a3d62;
+  --blob-b: #3a1f33;
+  --blob-c: #0f3d33;
+  --blob-opacity: 0.35;
+}
+
+/* ---------- tema "weather": base noturna (moods sobrescrevem bg/blobs/accent) ---------- */
+[data-theme="weather"][data-weather-time="night"] {
+  --ink: #f5f5f7;
+  --ink-2: #a1a1a6;
+  --ink-3: #6e6e73;
+  --line: rgba(255, 255, 255, 0.12);
+
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --blob-opacity: 0.35;
+
+  --solid-bg: #f5f5f7;
+  --solid-text: #1d1d1f;
+  --glass-shine: rgba(255, 255, 255, 0.18);
+  --fill-subtle: rgba(255, 255, 255, 0.08);
+}
+
+[data-weather-mood="clear"][data-weather-time="day"] {
+  --bg: #eaf4ff;
+  --blob-a: #bfe0ff;
+  --blob-b: #ffe9a8;
+  --blob-c: #cfe2ff;
+  --accent: #0a84ff;
+  --accent-ink: #0060df;
+}
+[data-weather-mood="clear"][data-weather-time="night"] {
+  --bg: #050b18;
+  --blob-a: #14305c;
+  --blob-b: #2b2a4a;
+  --blob-c: #0d2240;
+  --accent: #5ac8fa;
+  --accent-ink: #8ed0ff;
+}
+
+[data-weather-mood="cloudy"][data-weather-time="day"] {
+  --bg: #eef0f3;
+  --blob-a: #d7dee6;
+  --blob-b: #e3e6ea;
+  --blob-c: #c9d3dc;
+  --accent: #5b6b7c;
+  --accent-ink: #44525f;
+}
+[data-weather-mood="cloudy"][data-weather-time="night"] {
+  --bg: #0c0e12;
+  --blob-a: #2a3038;
+  --blob-b: #353b42;
+  --blob-c: #20242a;
+  --accent: #9aa7b3;
+  --accent-ink: #c2cbd3;
+}
+
+[data-weather-mood="fog"][data-weather-time="day"] {
+  --bg: #eeeeec;
+  --blob-a: #e2e2dc;
+  --blob-b: #d8d8d2;
+  --blob-c: #ececea;
+  --accent: #9a9a8f;
+  --accent-ink: #6f6f66;
+}
+[data-weather-mood="fog"][data-weather-time="night"] {
+  --bg: #10100f;
+  --blob-a: #2c2c28;
+  --blob-b: #34342f;
+  --blob-c: #26261f;
+  --accent: #b9b9ac;
+  --accent-ink: #d4d4c8;
+}
+
+[data-weather-mood="rain"][data-weather-time="day"] {
+  --bg: #e7eef5;
+  --blob-a: #b9d2ea;
+  --blob-b: #9fc1e0;
+  --blob-c: #cddcec;
+  --accent: #2f6fb3;
+  --accent-ink: #1f5690;
+}
+[data-weather-mood="rain"][data-weather-time="night"] {
+  --bg: #060b12;
+  --blob-a: #11253b;
+  --blob-b: #16314d;
+  --blob-c: #0c1c2e;
+  --accent: #4f9bdb;
+  --accent-ink: #7fb8e8;
+}
+
+[data-weather-mood="snow"][data-weather-time="day"] {
+  --bg: #f3f8fc;
+  --blob-a: #e4f0fa;
+  --blob-b: #d2e8f7;
+  --blob-c: #eef6fb;
+  --accent: #5aa9d6;
+  --accent-ink: #3c80ab;
+}
+[data-weather-mood="snow"][data-weather-time="night"] {
+  --bg: #0a0f14;
+  --blob-a: #1c2c38;
+  --blob-b: #233848;
+  --blob-c: #142028;
+  --accent: #8ecbe8;
+  --accent-ink: #b6e0f2;
+}
+
+[data-weather-mood="storm"][data-weather-time="day"] {
+  --bg: #e4e3e8;
+  --blob-a: #b8b6c4;
+  --blob-b: #9492a3;
+  --blob-c: #cfceda;
+  --accent: #6a5f9c;
+  --accent-ink: #4d4477;
+}
+[data-weather-mood="storm"][data-weather-time="night"] {
+  --bg: #07060a;
+  --blob-a: #211f2b;
+  --blob-b: #2c2838;
+  --blob-c: #18161f;
+  --accent: #a89be0;
+  --accent-ink: #c7bdf0;
 }
 
 @theme inline {
@@ -44,6 +204,7 @@ body {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 /* ---------- aurora de fundo ---------- */
@@ -58,15 +219,16 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.5;
+  opacity: var(--blob-opacity, 0.5);
   will-change: transform;
+  transition: background 0.8s ease, opacity 0.8s ease;
 }
 .blob.a {
   width: 42vw;
   height: 42vw;
   left: -8vw;
   top: -6vw;
-  background: radial-gradient(circle at 30% 30%, #cfe2ff, transparent 70%);
+  background: radial-gradient(circle at 30% 30%, var(--blob-a), transparent 70%);
   animation: drift1 22s var(--ease) infinite alternate;
 }
 .blob.b {
@@ -74,7 +236,7 @@ body {
   height: 38vw;
   right: -6vw;
   top: 8vh;
-  background: radial-gradient(circle at 60% 40%, #ffe0ec, transparent 70%);
+  background: radial-gradient(circle at 60% 40%, var(--blob-b), transparent 70%);
   animation: drift2 26s var(--ease) infinite alternate;
 }
 .blob.c {
@@ -82,7 +244,7 @@ body {
   height: 46vw;
   left: 18vw;
   bottom: -18vw;
-  background: radial-gradient(circle at 50% 50%, #d7f5ea, transparent 70%);
+  background: radial-gradient(circle at 50% 50%, var(--blob-c), transparent 70%);
   animation: drift3 30s var(--ease) infinite alternate;
 }
 @keyframes drift1 {
@@ -111,7 +273,11 @@ body {
   backdrop-filter: blur(24px) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
-  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  transition:
+    transform 0.4s var(--ease),
+    box-shadow 0.4s var(--ease),
+    background-color 0.6s ease,
+    border-color 0.6s ease;
 }
 .glass-card::before {
   content: "";
@@ -121,7 +287,7 @@ body {
   opacity: 0;
   transition: opacity 0.4s var(--ease);
   pointer-events: none;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255, 255, 255, 0.85), transparent 45%);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--glass-shine), transparent 45%);
 }
 .glass-card:hover {
   transform: translateY(-4px);
@@ -150,6 +316,7 @@ body {
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
+  transition: background-color 0.6s ease, border-color 0.6s ease;
 }
 .brand {
   font-weight: 600;
@@ -184,17 +351,21 @@ body {
 }
 .nav-links a:hover {
   color: var(--ink);
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--fill-subtle);
 }
 .nav-cta {
-  background: var(--ink);
-  color: #fff;
+  background: var(--solid-bg);
+  color: var(--solid-text);
   padding: 9px 18px;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
-  transition: 0.25s var(--ease);
+  transition:
+    transform 0.25s var(--ease),
+    opacity 0.25s var(--ease),
+    background-color 0.6s ease,
+    color 0.6s ease;
 }
 .nav-cta:hover {
   transform: translateY(-1px);
@@ -251,8 +422,8 @@ body {
   transition: 0.3s var(--ease);
 }
 .btn-primary {
-  background: var(--ink);
-  color: #fff;
+  background: var(--solid-bg);
+  color: var(--solid-text);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
@@ -283,7 +454,7 @@ body {
   color: var(--ink-2);
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.045);
+  background: var(--fill-subtle);
   border: 1px solid var(--line);
 }
 .chip-lg {
@@ -507,7 +678,7 @@ input:focus-visible {
 .panel-prog {
   height: 4px;
   border-radius: 99px;
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--line);
   margin-top: 16px;
   overflow: hidden;
 }
@@ -515,8 +686,8 @@ input:focus-visible {
   display: block;
   height: 100%;
   border-radius: 99px;
-  background: var(--ink);
-  transition: width 1s linear;
+  background: var(--solid-bg);
+  transition: width 1s linear, background-color 0.6s ease;
 }
 .panel-times {
   display: flex;
@@ -733,11 +904,12 @@ input:focus-visible {
   font-variant-numeric: tabular-nums;
 }
 .panel-cal-grid .day.muted {
-  color: rgba(0, 0, 0, 0.18);
+  color: var(--ink-3);
+  opacity: 0.45;
 }
 .panel-cal-grid .day.today {
-  background: var(--ink);
-  color: #fff;
+  background: var(--solid-bg);
+  color: var(--solid-text);
   font-weight: 600;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }

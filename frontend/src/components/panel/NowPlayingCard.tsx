@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { GlassCard } from "@/components/GlassCard";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { getNowPlaying } from "@/lib/api";
 import type { SpotifyTrack } from "@/types/portfolio";
 

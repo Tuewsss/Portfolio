@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { WelcomeSplash } from "@/components/WelcomeSplash";
-import { VisitorProvider } from "@/components/VisitorProvider";
-import { LanguageProvider } from "@/components/LanguageProvider";
+import { VisitorProvider } from "@/components/providers/VisitorProvider";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import { WeatherProvider } from "@/components/providers/WeatherProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +34,14 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <LanguageProvider>
-          <VisitorProvider>
-            <WelcomeSplash />
-            {children}
-          </VisitorProvider>
+          <WeatherProvider>
+            <ThemeProvider>
+              <VisitorProvider>
+                <WelcomeSplash />
+                {children}
+              </VisitorProvider>
+            </ThemeProvider>
+          </WeatherProvider>
         </LanguageProvider>
       </body>
     </html>

@@ -111,4 +111,10 @@ export const pt: Dictionary = {
     namePlaceholder: "seu nome",
     pressEnter: "pressione enter",
   },
+  theme: {
+    selectLabel: "Selecionar tema",
+    white: "Claro",
+    dark: "Escuro",
+    weather: "Clima",
+  },
 };

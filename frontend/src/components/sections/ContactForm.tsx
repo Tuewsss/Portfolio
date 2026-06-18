@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { sendContactMessage } from "@/lib/api";
 
 type Status = "idle" | "sending" | "success" | "error";

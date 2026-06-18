@@ -1,7 +1,8 @@
 "use client";
 
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { useLanguage } from "@/components/LanguageProvider";
+import { LanguageSwitcher } from "@/components/nav/LanguageSwitcher";
+import { useLanguage } from "@/components/providers/LanguageProvider";
+import { ThemeSwitcher } from "@/components/nav/ThemeSwitcher";
 import type { Profile } from "@/types/portfolio";
 
 interface NavbarProps {
@@ -25,6 +26,7 @@ export function Navbar({ profile }: NavbarProps) {
         <a href="#painel">{t.nav.panel}</a>
       </div>
       <div className="flex items-center gap-3">
+        <ThemeSwitcher />
         <LanguageSwitcher />
         <a href="#contato" className="nav-cta">
           {t.nav.contact}

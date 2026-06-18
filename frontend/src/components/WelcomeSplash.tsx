@@ -3,9 +3,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AuroraBackground } from "./AuroraBackground";
 import { GlassCard } from "./GlassCard";
-import { useLanguage } from "./LanguageProvider";
+import { useLanguage } from "./providers/LanguageProvider";
 import { ScrambleText } from "./ScrambleText";
-import { useVisitor } from "./VisitorProvider";
+import { useVisitor } from "./providers/VisitorProvider";
 import {
   MAX_VISITOR_NAME_LENGTH,
   getStoredVisitorName,

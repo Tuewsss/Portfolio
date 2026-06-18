@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { LANGUAGES } from "@/lib/i18n";
 
 function flagUrl(country: string) {
@@ -59,7 +59,7 @@ export function LanguageSwitcher() {
                 setLanguage(l.code);
                 setOpen(false);
               }}
-              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-black/5"
+              className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm transition-colors hover:bg-[var(--fill-subtle)]"
               style={{
                 color: l.code === language ? "var(--ink)" : "var(--ink-2)",
                 fontWeight: l.code === language ? 600 : 500,

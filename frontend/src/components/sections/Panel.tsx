@@ -1,6 +1,6 @@
 "use client";
 
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { CalendarCard } from "@/components/panel/CalendarCard";
 import { ClockCard } from "@/components/panel/ClockCard";
 import { GitHubCard } from "@/components/panel/GitHubCard";

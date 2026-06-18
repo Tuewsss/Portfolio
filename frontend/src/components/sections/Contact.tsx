@@ -1,8 +1,8 @@
 "use client";
 
-import { ContactForm } from "@/components/ContactForm";
+import { ContactForm } from "@/components/sections/ContactForm";
 import { GlassCard } from "@/components/GlassCard";
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
 import type { Profile } from "@/types/portfolio";
 
