@@ -1,6 +1,11 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.decorators.http import require_GET
 from rest_framework import mixins, viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from .models import ContactMessage, Profile, Project, Skill
+from . import spotify
+from .models import ContactMessage, GitHubStats, Profile, Project, Skill, SpotifyAuth
 from .serializers import (
     ContactMessageSerializer,
     ProfileSerializer,
@@ -28,3 +33,50 @@ class ProjectViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 class ContactMessageViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
+
+
+@require_GET
+def spotify_login(request):
+    """Visite essa URL no navegador (logado no Spotify) para autorizar o app uma única vez."""
+    return HttpResponseRedirect(spotify.build_authorize_url())
+
+
+@require_GET
+def spotify_callback(request):
+    error = request.GET.get("error")
+    code = request.GET.get("code")
+    if error or not code:
+        return HttpResponse(f"Autorização falhou: {error or 'código ausente'}", status=400)
+
+    tokens = spotify.exchange_code_for_tokens(code)
+    refresh_token = tokens.get("refresh_token")
+    if not refresh_token:
+        return HttpResponse("O Spotify não retornou um refresh_token.", status=400)
+
+    auth, _ = SpotifyAuth.objects.get_or_create(pk=1)
+    auth.refresh_token = refresh_token
+    auth.save()
+    return HttpResponse("Spotify conectado com sucesso! Pode fechar esta aba.")
+
+
+@api_view(["GET"])
+def now_playing(request):
+    data = spotify.get_now_playing()
+    return Response(data or {})
+
+
+@api_view(["GET"])
+def github_stats_view(request):
+    stats = GitHubStats.objects.first()
+    if not stats:
+        return Response({})
+    return Response(
+        {
+            "total_commits": stats.total_commits,
+            "total_repos": stats.total_repos,
+            "total_stars": stats.total_stars,
+            "estimated_lines": stats.estimated_lines,
+            "languages": stats.languages,
+            "updated_at": stats.updated_at,
+        }
+    )

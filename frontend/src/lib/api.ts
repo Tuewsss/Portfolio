@@ -1,9 +1,11 @@
 import type {
   ContactPayload,
+  GitHubStats,
   PaginatedResponse,
   Profile,
   Project,
   Skill,
+  SpotifyTrack,
 } from "@/types/portfolio";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
@@ -42,4 +44,12 @@ export function sendContactMessage(payload: ContactPayload) {
     method: "POST",
     body: JSON.stringify(payload),
   });
+}
+
+export function getNowPlaying() {
+  return apiFetch<Partial<SpotifyTrack>>("/spotify/now-playing/");
+}
+
+export function getGitHubStats() {
+  return apiFetch<Partial<GitHubStats>>("/github/stats/");
 }

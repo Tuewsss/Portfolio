@@ -45,6 +45,8 @@ class ProfileSerializer(serializers.ModelSerializer):
             "id",
             "full_name",
             "role",
+            "headline",
+            "tagline",
             "bio",
             "years_experience",
             "projects_delivered",

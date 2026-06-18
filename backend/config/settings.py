@@ -156,3 +156,18 @@ CORS_ALLOWED_ORIGINS = [
         'CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000'
     ).split(',') if o
 ]
+
+
+# Spotify (painel "ouvindo agora")
+# https://developer.spotify.com/dashboard
+
+SPOTIFY_CLIENT_ID = os.environ.get('SPOTIFY_CLIENT_ID', '')
+SPOTIFY_CLIENT_SECRET = os.environ.get('SPOTIFY_CLIENT_SECRET', '')
+SPOTIFY_REDIRECT_URI = os.environ.get('SPOTIFY_REDIRECT_URI', 'http://127.0.0.1:8000/api/spotify/callback/')
+
+
+# GitHub (painel de estatísticas)
+# https://github.com/settings/tokens
+
+GITHUB_USERNAME = os.environ.get('GITHUB_USERNAME', '')
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', '')

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ContactMessage, Profile, Project, Skill, Technology
+from .models import ContactMessage, GitHubStats, Profile, Project, Skill, SpotifyAuth, Technology
 
 
 @admin.register(Profile)
@@ -34,3 +34,20 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ["name", "email", "created_at", "is_read"]
     list_filter = ["is_read"]
     readonly_fields = ["name", "email", "message", "created_at"]
+
+
+@admin.register(SpotifyAuth)
+class SpotifyAuthAdmin(admin.ModelAdmin):
+    list_display = ["updated_at"]
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(GitHubStats)
+class GitHubStatsAdmin(admin.ModelAdmin):
+    list_display = ["total_commits", "total_repos", "total_stars", "estimated_lines", "updated_at"]
+    readonly_fields = ["total_commits", "total_repos", "total_stars", "estimated_lines", "languages", "updated_at"]
+
+    def has_add_permission(self, request):
+        return False
