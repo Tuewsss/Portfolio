@@ -3,7 +3,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from portfolio import github_stats
-from portfolio.models import GitHubStats
 
 
 class Command(BaseCommand):
@@ -16,7 +15,7 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Buscando estatísticas de {username}...")
         try:
-            data = github_stats.fetch_github_stats(username)
+            stats = github_stats.refresh_stats()
         except requests.exceptions.HTTPError as exc:
             status = exc.response.status_code if exc.response is not None else None
             if status == 404:
@@ -32,14 +31,6 @@ class Command(BaseCommand):
             raise CommandError(f"Erro ao consultar a API do GitHub: {exc}") from exc
         except requests.exceptions.RequestException as exc:
             raise CommandError(f"Falha de conexão com a API do GitHub: {exc}") from exc
-
-        stats, _ = GitHubStats.objects.get_or_create(pk=1)
-        stats.total_commits = data["total_commits"]
-        stats.total_repos = data["total_repos"]
-        stats.total_stars = data["total_stars"]
-        stats.estimated_lines = data["estimated_lines"]
-        stats.languages = data["languages"]
-        stats.save()
 
         self.stdout.write(
             self.style.SUCCESS(

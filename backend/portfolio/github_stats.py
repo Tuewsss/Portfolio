@@ -1,11 +1,19 @@
+from datetime import timedelta
+
 import requests
 from django.conf import settings
+from django.utils import timezone
+
+from .models import GitHubStats
 
 API_BASE = "https://api.github.com"
 
 # Aproximação grosseira: o GitHub não expõe "linhas de código" pela API,
 # só bytes por linguagem. Esse valor é só pra converter bytes -> linhas estimadas.
 BYTES_PER_LINE_ESTIMATE = 45
+
+# Por quanto tempo o cache local é considerado "fresco" antes de buscar de novo.
+STATS_TTL = timedelta(hours=6)
 
 
 def _headers():
@@ -79,3 +87,34 @@ def fetch_github_stats(username):
         "estimated_lines": total_bytes // BYTES_PER_LINE_ESTIMATE,
         "languages": languages_pct,
     }
+
+
+def refresh_stats():
+    """Busca dados frescos no GitHub e atualiza o cache local. Retorna o registro atualizado."""
+    data = fetch_github_stats(settings.GITHUB_USERNAME)
+    stats, _ = GitHubStats.objects.get_or_create(pk=1)
+    stats.total_commits = data["total_commits"]
+    stats.total_repos = data["total_repos"]
+    stats.total_stars = data["total_stars"]
+    stats.estimated_lines = data["estimated_lines"]
+    stats.languages = data["languages"]
+    stats.save()
+    return stats
+
+
+def get_or_refresh_stats():
+    """Retorna o cache local, atualizando primeiro se estiver vencido ou ausente.
+
+    Se a busca falhar (GitHub fora do ar, rate limit, etc.), devolve o cache
+    antigo em vez de propagar o erro — o painel mostra o último dado válido.
+    """
+    stats = GitHubStats.objects.first()
+    is_stale = not stats or (timezone.now() - stats.updated_at) > STATS_TTL
+
+    if is_stale and settings.GITHUB_USERNAME:
+        try:
+            stats = refresh_stats()
+        except requests.exceptions.RequestException:
+            pass
+
+    return stats

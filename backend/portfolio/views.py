@@ -4,8 +4,8 @@ from rest_framework import mixins, viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from . import spotify
-from .models import ContactMessage, GitHubStats, Profile, Project, Skill, SpotifyAuth
+from . import github_stats, spotify
+from .models import ContactMessage, Profile, Project, Skill, SpotifyAuth
 from .serializers import (
     ContactMessageSerializer,
     ProfileSerializer,
@@ -67,7 +67,7 @@ def now_playing(request):
 
 @api_view(["GET"])
 def github_stats_view(request):
-    stats = GitHubStats.objects.first()
+    stats = github_stats.get_or_refresh_stats()
     if not stats:
         return Response({})
     return Response(
