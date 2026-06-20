@@ -9,6 +9,7 @@ from .models import ContactMessage, Profile, Project, Skill, SpotifyAuth
 from .serializers import (
     ContactMessageSerializer,
     ProfileSerializer,
+    ProjectDetailSerializer,
     ProjectSerializer,
     SkillSerializer,
 )
@@ -26,8 +27,18 @@ class SkillViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 class ProjectViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Project.objects.prefetch_related("technologies").all()
-    serializer_class = ProjectSerializer
     lookup_field = "slug"
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return ProjectDetailSerializer
+        return ProjectSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if self.action == "retrieve":
+            qs = qs.prefetch_related("media")
+        return qs
 
 
 class ContactMessageViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):

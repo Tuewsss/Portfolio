@@ -26,6 +26,12 @@ export interface Dictionary {
     description: string;
     empty: string;
   };
+  projectDetail: {
+    back: string;
+    liveLink: string;
+    repoLink: string;
+    gallery: string;
+  };
   about: {
     title: string;
     emptyBio: string;

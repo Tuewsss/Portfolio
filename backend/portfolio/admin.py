@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ContactMessage, GitHubStats, Profile, Project, Skill, SpotifyAuth, Technology
+from .models import ContactMessage, GitHubStats, Profile, Project, ProjectMedia, Skill, SpotifyAuth, Technology
 
 
 @admin.register(Profile)
@@ -20,6 +20,12 @@ class TechnologyAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
 
+class ProjectMediaInline(admin.TabularInline):
+    model = ProjectMedia
+    extra = 1
+    fields = ["image", "caption", "order"]
+
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ["title", "tag", "is_featured", "order", "created_at"]
@@ -27,6 +33,14 @@ class ProjectAdmin(admin.ModelAdmin):
     search_fields = ["title", "description"]
     prepopulated_fields = {"slug": ("title",)}
     autocomplete_fields = ["technologies"]
+    inlines = [ProjectMediaInline]
+    fieldsets = (
+        (None, {"fields": ("title", "slug", "is_featured", "tag")}),
+        ("Conteúdo", {"fields": ("description", "technologies")}),
+        ("Capa", {"fields": ("image",)}),
+        ("Links", {"fields": ("project_url", "repo_url")}),
+        ("Organização", {"fields": ("order",)}),
+    )
 
 
 @admin.register(ContactMessage)

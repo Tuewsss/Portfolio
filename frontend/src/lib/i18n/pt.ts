@@ -26,6 +26,12 @@ export const pt: Dictionary = {
     description: "Uma amostra do que tenho construído ultimamente — interface, performance e detalhe.",
     empty: "Nenhum projeto cadastrado ainda.",
   },
+  projectDetail: {
+    back: "Voltar",
+    liveLink: "Ver projeto no ar",
+    repoLink: "Ver código fonte",
+    gallery: "Galeria",
+  },
   about: {
     title: "Sobre mim",
     emptyBio: "Em breve, mais sobre minha trajetória.",

@@ -81,6 +81,21 @@ class Project(models.Model):
         return self.title
 
 
+class ProjectMedia(models.Model):
+    project = models.ForeignKey(Project, related_name="media", on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="projects/gallery/", help_text="Aceita imagens estáticas e GIFs.")
+    caption = models.CharField(max_length=150, blank=True)
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "Mídia do projeto"
+        verbose_name_plural = "Mídias do projeto"
+
+    def __str__(self):
+        return self.caption or f"Mídia #{self.pk or '?'} de {self.project.title}"
+
+
 class SpotifyAuth(models.Model):
     refresh_token = models.TextField()
     updated_at = models.DateTimeField(auto_now=True)

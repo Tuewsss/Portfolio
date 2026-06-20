@@ -3,6 +3,13 @@ export interface Technology {
   name: string;
 }
 
+export interface ProjectMedia {
+  id: number;
+  image: string;
+  caption: string;
+  order: number;
+}
+
 export interface Project {
   id: number;
   title: string;
@@ -17,6 +24,7 @@ export interface Project {
   is_featured: boolean;
   order: number;
   created_at: string;
+  media?: ProjectMedia[];
 }
 
 export interface Profile {

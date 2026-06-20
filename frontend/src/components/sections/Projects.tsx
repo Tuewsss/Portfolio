@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { GlassCard } from "@/components/GlassCard";
 import { useLanguage } from "@/components/providers/LanguageProvider";
 import { Reveal } from "@/components/Reveal";
@@ -37,25 +39,33 @@ export function Projects({ projects }: ProjectsProps) {
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {projects.map((project, i) => (
               <Reveal key={project.id} delay={(i % 4) * 60} className={i === 0 ? "sm:col-span-2" : ""}>
-                <GlassCard className="p-8">
-                  <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--ink-3)" }}>
-                    {project.tag_display}
-                  </span>
-                  <h3 className="mt-3.5 mb-2.5 text-2xl font-semibold tracking-tight">{project.title}</h3>
-                  <p className="max-w-[46ch] text-[15px]" style={{ color: "var(--ink-2)" }}>
-                    {project.description}
-                  </p>
-                  {project.technologies.length > 0 && (
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {project.technologies.map((tech) => (
-                        <span key={tech.id} className="chip">
-                          {tech.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  {i === 0 && <div className="project-art" />}
-                </GlassCard>
+                <Link href={`/projetos/${project.slug}`} className="block">
+                  <GlassCard className="p-8">
+                    <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--ink-3)" }}>
+                      {project.tag_display}
+                    </span>
+                    <h3 className="mt-3.5 mb-2.5 text-2xl font-semibold tracking-tight">{project.title}</h3>
+                    <p className="max-w-[46ch] text-[15px]" style={{ color: "var(--ink-2)" }}>
+                      {project.description}
+                    </p>
+                    {project.technologies.length > 0 && (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {project.technologies.map((tech) => (
+                          <span key={tech.id} className="chip">
+                            {tech.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    {project.image ? (
+                      <div className="relative mt-6 h-40 w-full overflow-hidden rounded-[var(--r-md)]">
+                        <Image src={project.image} alt={project.title} fill className="object-cover" />
+                      </div>
+                    ) : (
+                      i === 0 && <div className="project-art" />
+                    )}
+                  </GlassCard>
+                </Link>
               </Reveal>
             ))}
           </div>

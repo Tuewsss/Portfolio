@@ -26,6 +26,12 @@ export const en: Dictionary = {
     description: "A sample of what I've been building lately — interface, performance and detail.",
     empty: "No projects added yet.",
   },
+  projectDetail: {
+    back: "Back",
+    liveLink: "View live project",
+    repoLink: "View source code",
+    gallery: "Gallery",
+  },
   about: {
     title: "About me",
     emptyBio: "More about my journey, coming soon.",

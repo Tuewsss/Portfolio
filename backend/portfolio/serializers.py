@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import ContactMessage, Profile, Project, Skill, Technology
+from .models import ContactMessage, Profile, Project, ProjectMedia, Skill, Technology
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -13,6 +13,12 @@ class TechnologySerializer(serializers.ModelSerializer):
     class Meta:
         model = Technology
         fields = ["id", "name"]
+
+
+class ProjectMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectMedia
+        fields = ["id", "image", "caption", "order"]
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -36,6 +42,13 @@ class ProjectSerializer(serializers.ModelSerializer):
             "order",
             "created_at",
         ]
+
+
+class ProjectDetailSerializer(ProjectSerializer):
+    media = ProjectMediaSerializer(many=True, read_only=True)
+
+    class Meta(ProjectSerializer.Meta):
+        fields = ProjectSerializer.Meta.fields + ["media"]
 
 
 class ProfileSerializer(serializers.ModelSerializer):
