@@ -6,14 +6,12 @@ export const es: Dictionary = {
     projects: "Proyectos",
     about: "Sobre mí",
     skills: "Skills",
-    panel: "Panel",
+    panel: "Día a Día",
     contact: "Contacto",
   },
   hero: {
-    available: "Disponible para nuevos proyectos",
-    unavailable: "No disponible por el momento",
     ctaProjects: "Ver proyectos →",
-    ctaContact: "Hablemos",
+    ctaContact: "Encuéntrame",
   },
   heroGreeting: {
     defaultVisitor: "visitante",
@@ -33,11 +31,18 @@ export const es: Dictionary = {
     gallery: "Galería",
   },
   about: {
+    label: "Quién soy",
     title: "Sobre mí",
+    description: "Mi trayectoria, cómo pienso el trabajo y qué me mueve día a día.",
     emptyBio: "Pronto, más sobre mi trayectoria.",
     yearsExperience: "años de experiencia",
     projectsDelivered: "proyectos entregados",
-    recurringClients: "clientes recurrentes",
+  },
+  experience: {
+    label: "Trayectoria",
+    title: "Experiencia",
+    description: "Por dónde he pasado y qué me llevé de cada lugar.",
+    current: "Actual",
   },
   skills: {
     label: "Herramientas",

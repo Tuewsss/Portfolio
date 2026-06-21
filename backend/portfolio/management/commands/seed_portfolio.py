@@ -60,7 +60,6 @@ class Command(BaseCommand):
             defaults={
                 "full_name": "Mateus Monteiro Mendes",
                 "role": "Desenvolvedor Full Stack",
-                "headline": "Construo interfaces limpas e funcionais.",
                 "tagline": "Desenvolvedor full stack focado em desenvolvimento Web.",
                 "bio": (
                     "Sou desenvolvedor e gosto de trabalhar onde o código encontra o design. "

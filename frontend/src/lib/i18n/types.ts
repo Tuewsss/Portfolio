@@ -10,8 +10,6 @@ export interface Dictionary {
     contact: string;
   };
   hero: {
-    available: string;
-    unavailable: string;
     ctaProjects: string;
     ctaContact: string;
   };
@@ -33,11 +31,18 @@ export interface Dictionary {
     gallery: string;
   };
   about: {
+    label: string;
     title: string;
+    description: string;
     emptyBio: string;
     yearsExperience: string;
     projectsDelivered: string;
-    recurringClients: string;
+  };
+  experience: {
+    label: string;
+    title: string;
+    description: string;
+    current: string;
   };
   skills: {
     label: string;

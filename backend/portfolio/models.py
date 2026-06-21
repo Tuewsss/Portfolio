@@ -4,16 +4,10 @@ from django.db import models
 class Profile(models.Model):
     full_name = models.CharField(max_length=120)
     role = models.CharField(max_length=120, help_text="Ex: Desenvolvedor Full Stack")
-    headline = models.CharField(
-        max_length=200, blank=True, help_text="Frase de impacto do hero. Ex: Construo interfaces limpas e funcionais."
-    )
-    tagline = models.CharField(
-        max_length=300, blank=True, help_text="Linha curta abaixo do headline, no hero."
-    )
+    tagline = models.CharField(max_length=300, blank=True, help_text="Linha curta abaixo da saudação, no hero.")
     bio = models.TextField(help_text="Texto usado na seção 'Sobre mim' (pode ter múltiplos parágrafos).")
     years_experience = models.PositiveSmallIntegerField(default=0)
     projects_delivered = models.PositiveSmallIntegerField(default=0)
-    recurring_clients = models.PositiveSmallIntegerField(default=0)
     available_for_work = models.BooleanField(default=True)
     email = models.EmailField()
     linkedin_url = models.URLField(blank=True)
@@ -94,6 +88,40 @@ class ProjectMedia(models.Model):
 
     def __str__(self):
         return self.caption or f"Mídia #{self.pk or '?'} de {self.project.title}"
+
+
+class Experience(models.Model):
+    company = models.CharField(max_length=120)
+    role = models.CharField(max_length=120, blank=True, help_text="Ex: Desenvolvedor Estagiário")
+    logo = models.ImageField(upload_to="experience/", blank=True, null=True)
+    description = models.TextField()
+    technologies = models.ManyToManyField(Technology, related_name="experiences", blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True, help_text="Deixe em branco se ainda estiver em andamento.")
+    order = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order", "-start_date"]
+        verbose_name = "Experiência"
+        verbose_name_plural = "Experiências"
+
+    def __str__(self):
+        return f"{self.role} — {self.company}" if self.role else self.company
+
+
+class CalendarEntry(models.Model):
+    date = models.DateField(unique=True)
+    title = models.CharField(max_length=150)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date"]
+        verbose_name = "Atividade do calendário"
+        verbose_name_plural = "Atividades do calendário"
+
+    def __str__(self):
+        return f"{self.date:%d/%m/%Y} — {self.title}"
 
 
 class SpotifyAuth(models.Model):

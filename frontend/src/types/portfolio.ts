@@ -31,17 +31,27 @@ export interface Profile {
   id: number;
   full_name: string;
   role: string;
-  headline: string;
   tagline: string;
   bio: string;
   years_experience: number;
   projects_delivered: number;
-  recurring_clients: number;
   available_for_work: boolean;
   email: string;
   linkedin_url: string;
   github_url: string;
   avatar: string | null;
+}
+
+export interface Experience {
+  id: number;
+  company: string;
+  role: string;
+  logo: string | null;
+  description: string;
+  technologies: Technology[];
+  start_date: string;
+  end_date: string | null;
+  order: number;
 }
 
 export interface ContactPayload {
@@ -59,6 +69,13 @@ export interface SpotifyTrack {
   played_at: string | null;
   progress_ms: number | null;
   duration_ms: number | null;
+}
+
+export interface CalendarEntry {
+  id: number;
+  date: string;
+  title: string;
+  description: string;
 }
 
 export interface GitHubStats {

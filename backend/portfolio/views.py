@@ -5,9 +5,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from . import github_stats, spotify
-from .models import ContactMessage, Profile, Project, Skill, SpotifyAuth
+from .models import CalendarEntry, ContactMessage, Experience, Profile, Project, Skill, SpotifyAuth
 from .serializers import (
+    CalendarEntrySerializer,
     ContactMessageSerializer,
+    ExperienceSerializer,
     ProfileSerializer,
     ProjectDetailSerializer,
     ProjectSerializer,
@@ -44,6 +46,31 @@ class ProjectViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.
 class ContactMessageViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = ContactMessage.objects.all()
     serializer_class = ContactMessageSerializer
+
+
+class ExperienceViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Somente leitura: as experiências só podem ser criadas/editadas pelo admin."""
+
+    queryset = Experience.objects.prefetch_related("technologies").all()
+    serializer_class = ExperienceSerializer
+    pagination_class = None
+
+
+class CalendarEntryViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """Somente leitura: as atividades só podem ser criadas/editadas pelo admin."""
+
+    serializer_class = CalendarEntrySerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        qs = CalendarEntry.objects.all()
+        year = self.request.query_params.get("year")
+        month = self.request.query_params.get("month")
+        if year:
+            qs = qs.filter(date__year=year)
+        if month:
+            qs = qs.filter(date__month=month)
+        return qs
 
 
 @require_GET

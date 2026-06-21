@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import ContactMessage, GitHubStats, Profile, Project, ProjectMedia, Skill, SpotifyAuth, Technology
+from .models import (
+    CalendarEntry,
+    ContactMessage,
+    Experience,
+    GitHubStats,
+    Profile,
+    Project,
+    ProjectMedia,
+    Skill,
+    SpotifyAuth,
+    Technology,
+)
 
 
 @admin.register(Profile)
@@ -41,6 +52,24 @@ class ProjectAdmin(admin.ModelAdmin):
         ("Links", {"fields": ("project_url", "repo_url")}),
         ("Organização", {"fields": ("order",)}),
     )
+
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ["company", "role", "start_date", "end_date", "order"]
+    list_filter = ["company"]
+    search_fields = ["company", "role", "description"]
+    autocomplete_fields = ["technologies"]
+    ordering = ["order", "-start_date"]
+
+
+@admin.register(CalendarEntry)
+class CalendarEntryAdmin(admin.ModelAdmin):
+    list_display = ["date", "title"]
+    list_filter = ["date"]
+    search_fields = ["title", "description"]
+    date_hierarchy = "date"
+    ordering = ["-date"]
 
 
 @admin.register(ContactMessage)

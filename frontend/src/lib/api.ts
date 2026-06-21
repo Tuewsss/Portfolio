@@ -1,5 +1,7 @@
 import type {
+  CalendarEntry,
   ContactPayload,
+  Experience,
   GitHubStats,
   PaginatedResponse,
   Profile,
@@ -47,4 +49,12 @@ export function getNowPlaying() {
 
 export function getGitHubStats() {
   return apiFetch<Partial<GitHubStats>>("/github/stats/");
+}
+
+export function getCalendarEntries(year: number, month: number) {
+  return apiFetch<CalendarEntry[]>(`/calendar/?year=${year}&month=${month + 1}`);
+}
+
+export function getExperiences() {
+  return apiFetch<Experience[]>("/experiences/");
 }

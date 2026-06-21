@@ -3,11 +3,22 @@
 import { useEffect, useState } from "react";
 import { GlassCard } from "@/components/GlassCard";
 import { useLanguage } from "@/components/providers/LanguageProvider";
+import { getCalendarEntries } from "@/lib/api";
+import type { CalendarEntry } from "@/types/portfolio";
 
 interface DayCell {
   day: number;
   muted: boolean;
   isToday: boolean;
+  dateKey: string | null;
+}
+
+function pad(n: number) {
+  return n.toString().padStart(2, "0");
+}
+
+function dateKeyFor(year: number, month: number, day: number) {
+  return `${year}-${pad(month + 1)}-${pad(day)}`;
 }
 
 export function CalendarCard() {
@@ -15,34 +26,99 @@ export function CalendarCard() {
   // A data real só existe no cliente; calculá-la direto no render causaria
   // um mismatch de hidratação entre servidor e cliente.
   const [today, setToday] = useState<Date | null>(null);
+  const [viewYear, setViewYear] = useState<number | null>(null);
+  const [viewMonth, setViewMonth] = useState<number | null>(null);
+  const [entries, setEntries] = useState<Record<string, CalendarEntry>>({});
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- data real só existe no cliente
-    setToday(new Date());
+    const now = new Date();
+    /* eslint-disable react-hooks/set-state-in-effect -- data real só existe no cliente */
+    setToday(now);
+    setViewYear(now.getFullYear());
+    setViewMonth(now.getMonth());
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
-  if (!today) {
+  useEffect(() => {
+    if (viewYear === null || viewMonth === null) return;
+    let cancelled = false;
+
+    getCalendarEntries(viewYear, viewMonth)
+      .then((data) => {
+        if (cancelled) return;
+        const map: Record<string, CalendarEntry> = {};
+        for (const entry of data) map[entry.date] = entry;
+        setEntries(map);
+      })
+      .catch(() => {
+        if (!cancelled) setEntries({});
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [viewYear, viewMonth]);
+
+  function goToPrevMonth() {
+    if (viewYear === null || viewMonth === null) return;
+    if (viewMonth === 0) {
+      setViewYear(viewYear - 1);
+      setViewMonth(11);
+    } else {
+      setViewMonth(viewMonth - 1);
+    }
+  }
+
+  function goToNextMonth() {
+    if (viewYear === null || viewMonth === null) return;
+    if (viewMonth === 11) {
+      setViewYear(viewYear + 1);
+      setViewMonth(0);
+    } else {
+      setViewMonth(viewMonth + 1);
+    }
+  }
+
+  if (!today || viewYear === null || viewMonth === null) {
     return <div className="glass-card panel-cal" />;
   }
 
-  const year = today.getFullYear();
-  const month = today.getMonth();
-  const firstWeekday = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const monthLabel = new Intl.DateTimeFormat(t.locale, { month: "long", year: "numeric" }).format(today);
+  const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const monthLabel = new Intl.DateTimeFormat(t.locale, { month: "long", year: "numeric" }).format(
+    new Date(viewYear, viewMonth, 1),
+  );
 
+  // Sempre 42 células (6 semanas) — assim o card nunca muda de altura
+  // dependendo de quantos dias/linhas o mês precisa.
   const cells: DayCell[] = [];
   for (let i = 0; i < firstWeekday; i++) {
-    cells.push({ day: 0, muted: true, isToday: false });
+    cells.push({ day: 0, muted: true, isToday: false, dateKey: null });
   }
   for (let d = 1; d <= daysInMonth; d++) {
-    cells.push({ day: d, muted: false, isToday: d === today.getDate() });
+    cells.push({
+      day: d,
+      muted: false,
+      isToday: viewYear === today.getFullYear() && viewMonth === today.getMonth() && d === today.getDate(),
+      dateKey: dateKeyFor(viewYear, viewMonth, d),
+    });
+  }
+  while (cells.length < 42) {
+    cells.push({ day: 0, muted: true, isToday: false, dateKey: null });
   }
 
   return (
     <GlassCard className="panel-cal">
       <div className="panel-cal-head">
-        <span className="panel-cal-month">{monthLabel}</span>
+        <div className="panel-cal-nav">
+          <button type="button" onClick={goToPrevMonth} aria-label="Mês anterior" className="panel-cal-arrow">
+            ‹
+          </button>
+          <span className="panel-cal-month">{monthLabel}</span>
+          <button type="button" onClick={goToNextMonth} aria-label="Próximo mês" className="panel-cal-arrow">
+            ›
+          </button>
+        </div>
         <span className="pico">{t.panel.calendar}</span>
       </div>
       <div className="panel-cal-grid">
@@ -51,11 +127,25 @@ export function CalendarCard() {
             {letter}
           </span>
         ))}
-        {cells.map((cell, i) => (
-          <span key={`day-${i}`} className={`day ${cell.muted ? "muted" : ""} ${cell.isToday ? "today" : ""}`}>
-            {cell.muted ? "" : cell.day}
-          </span>
-        ))}
+        {cells.map((cell, i) => {
+          const entry = cell.dateKey ? entries[cell.dateKey] : undefined;
+          return (
+            <span key={`day-${i}`} className="day-cell">
+              <span className={`day ${cell.muted ? "muted" : ""} ${cell.isToday ? "today" : ""}`}>
+                {cell.muted ? "" : cell.day}
+              </span>
+              {entry && (
+                <>
+                  <span className="day-dot" />
+                  <div className="day-tooltip">
+                    <strong>{entry.title}</strong>
+                    {entry.description && <p>{entry.description}</p>}
+                  </div>
+                </>
+              )}
+            </span>
+          );
+        })}
       </div>
     </GlassCard>
   );

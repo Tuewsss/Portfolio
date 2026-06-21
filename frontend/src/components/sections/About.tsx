@@ -15,16 +15,30 @@ export function About({ profile }: AboutProps) {
   const stats = [
     { num: profile?.years_experience, lbl: t.about.yearsExperience, suffix: "+" },
     { num: profile?.projects_delivered, lbl: t.about.projectsDelivered, suffix: "+" },
-    { num: profile?.recurring_clients, lbl: t.about.recurringClients, suffix: "" },
   ];
 
   return (
     <section id="sobre" className="relative z-[1] px-6 py-20">
       <div className="mx-auto max-w-[1080px]">
+        <Reveal className="mb-12 max-w-xl">
+          <span
+            className="mb-3.5 block text-xs font-semibold uppercase tracking-wide"
+            style={{ color: "var(--accent-ink)" }}
+          >
+            {t.about.label}
+          </span>
+          <h2
+            className="mb-3.5 font-bold leading-[1.1] tracking-tight"
+            style={{ fontSize: "clamp(30px, 4.5vw, 44px)" }}
+          >
+            {t.about.title}
+          </h2>
+          <p style={{ color: "var(--ink-2)", fontSize: "17px" }}>{t.about.description}</p>
+        </Reveal>
+
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1.3fr_1fr]">
           <Reveal>
             <GlassCard className="h-full p-10">
-              <h2 className="mb-4.5 text-3xl font-bold tracking-tight">{t.about.title}</h2>
               {paragraphs.length > 0 ? (
                 paragraphs.map((p, i) => (
                   <p key={i} className="mb-3.5 text-base" style={{ color: "var(--ink-2)" }}>

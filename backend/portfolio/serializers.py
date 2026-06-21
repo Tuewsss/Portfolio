@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import ContactMessage, Profile, Project, ProjectMedia, Skill, Technology
+from .models import CalendarEntry, ContactMessage, Experience, Profile, Project, ProjectMedia, Skill, Technology
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -58,18 +58,40 @@ class ProfileSerializer(serializers.ModelSerializer):
             "id",
             "full_name",
             "role",
-            "headline",
             "tagline",
             "bio",
             "years_experience",
             "projects_delivered",
-            "recurring_clients",
             "available_for_work",
             "email",
             "linkedin_url",
             "github_url",
             "avatar",
         ]
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    technologies = TechnologySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Experience
+        fields = [
+            "id",
+            "company",
+            "role",
+            "logo",
+            "description",
+            "technologies",
+            "start_date",
+            "end_date",
+            "order",
+        ]
+
+
+class CalendarEntrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CalendarEntry
+        fields = ["id", "date", "title", "description"]
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
