@@ -1,4 +1,4 @@
-# 🎧 nome-do-projeto
+# 🎧 Portfólio
 
 > Portfólio pessoal feito com **Django** no backend e **React + Next.js** no frontend, consumindo a **API do Spotify** e a **API do GitHub**.
 

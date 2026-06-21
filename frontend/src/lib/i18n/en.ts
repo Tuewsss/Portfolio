@@ -5,6 +5,7 @@ export const en: Dictionary = {
   nav: {
     projects: "Projects",
     about: "About",
+    experience: "Experience",
     skills: "Skills",
     panel: "Day to Day",
     contact: "Contact",
@@ -43,6 +44,8 @@ export const en: Dictionary = {
     title: "Experience",
     description: "Where I've been, and what I took from each place.",
     current: "Current",
+    workTitle: "Professional Experience",
+    educationTitle: "Academic Background",
   },
   skills: {
     label: "Tools",

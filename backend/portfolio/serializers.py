@@ -79,6 +79,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
             "id",
             "company",
             "role",
+            "category",
             "logo",
             "description",
             "technologies",

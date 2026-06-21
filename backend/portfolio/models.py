@@ -91,8 +91,16 @@ class ProjectMedia(models.Model):
 
 
 class Experience(models.Model):
-    company = models.CharField(max_length=120)
-    role = models.CharField(max_length=120, blank=True, help_text="Ex: Desenvolvedor Estagiário")
+    CATEGORY_WORK = "work"
+    CATEGORY_EDUCATION = "education"
+    CATEGORY_CHOICES = [
+        (CATEGORY_WORK, "Profissional"),
+        (CATEGORY_EDUCATION, "Acadêmica"),
+    ]
+
+    company = models.CharField(max_length=120, help_text="Empresa (profissional) ou instituição de ensino (acadêmica).")
+    role = models.CharField(max_length=120, blank=True, help_text="Ex: Desenvolvedor Estagiário, ou o nome do curso.")
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default=CATEGORY_WORK)
     logo = models.ImageField(upload_to="experience/", blank=True, null=True)
     description = models.TextField()
     technologies = models.ManyToManyField(Technology, related_name="experiences", blank=True)

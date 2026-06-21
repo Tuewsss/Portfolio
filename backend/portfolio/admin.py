@@ -56,8 +56,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
-    list_display = ["company", "role", "start_date", "end_date", "order"]
-    list_filter = ["company"]
+    list_display = ["company", "role", "category", "start_date", "end_date", "order"]
+    list_filter = ["category", "company"]
     search_fields = ["company", "role", "description"]
     autocomplete_fields = ["technologies"]
     ordering = ["order", "-start_date"]

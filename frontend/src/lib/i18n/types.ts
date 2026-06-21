@@ -5,6 +5,7 @@ export interface Dictionary {
   nav: {
     projects: string;
     about: string;
+    experience: string;
     skills: string;
     panel: string;
     contact: string;
@@ -43,6 +44,8 @@ export interface Dictionary {
     title: string;
     description: string;
     current: string;
+    workTitle: string;
+    educationTitle: string;
   };
   skills: {
     label: string;

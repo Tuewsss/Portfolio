@@ -22,6 +22,7 @@ export function Navbar({ profile }: NavbarProps) {
       <div className="nav-links">
         <a href="#projetos">{t.nav.projects}</a>
         <a href="#sobre">{t.nav.about}</a>
+        <a href="#experiencia">{t.nav.experience}</a>
         <a href="#skills">{t.nav.skills}</a>
         <a href="#painel">{t.nav.panel}</a>
       </div>

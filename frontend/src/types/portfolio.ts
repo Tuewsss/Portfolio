@@ -46,6 +46,7 @@ export interface Experience {
   id: number;
   company: string;
   role: string;
+  category: "work" | "education";
   logo: string | null;
   description: string;
   technologies: Technology[];
