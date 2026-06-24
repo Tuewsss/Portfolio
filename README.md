@@ -28,11 +28,11 @@ nome-do-projeto/
 
 Você vai precisar de:
 
-- Python 3.10+ e pip
+- Python 3.12+ e pip (o Django 6 exige 3.12 ou mais novo)
 - Node.js 18+ e npm
 - Git
 
-### �toplevel Clonando o projeto
+### 📥 Clonando o projeto
 
 ```bash
 git clone https://github.com/seu-usuario/nome-do-projeto.git
@@ -117,8 +117,14 @@ DJANGO_SECRET_KEY=
 DJANGO_DEBUG=
 DJANGO_ALLOWED_HOSTS=
 CORS_ALLOWED_ORIGINS=
+CSRF_TRUSTED_ORIGINS=
+DATABASE_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REDIRECT_URI=
 GITHUB_USERNAME=
 GITHUB_TOKEN=
 ```
@@ -131,8 +137,12 @@ O que colocar em cada uma:
 | `DJANGO_DEBUG` | `True` em desenvolvimento, `False` em produção. |
 | `DJANGO_ALLOWED_HOSTS` | Hosts permitidos. Em dev: `localhost,127.0.0.1` |
 | `CORS_ALLOWED_ORIGINS` | De onde o front pode acessar o back. Em dev: `http://localhost:3000` |
+| `CSRF_TRUSTED_ORIGINS` | Necessário só em produção (HTTPS atrás de proxy). Deixa vazio em dev. |
+| `DATABASE_URL` | Connection string de Postgres. Deixa vazio em dev — cai pro SQLite local automaticamente. |
+| `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | Credenciais do [Cloudinary](https://cloudinary.com) (storage de mídia). Deixa vazio em dev — as imagens vão pro disco local. |
 | `SPOTIFY_CLIENT_ID` | ID do app no Spotify (veja abaixo). |
 | `SPOTIFY_CLIENT_SECRET` | Secret do app no Spotify (veja abaixo). |
+| `SPOTIFY_REDIRECT_URI` | Redirect URI cadastrada no app do Spotify. Em dev: `http://127.0.0.1:8000/api/spotify/callback/` |
 | `GITHUB_USERNAME` | Seu nome de usuário do GitHub. |
 | `GITHUB_TOKEN` | Token pessoal do GitHub (veja abaixo). |
 
@@ -163,6 +173,19 @@ O que colocar em cada uma:
 6. Coloca o seu usuário em `GITHUB_USERNAME`.
 
 > ⚠️ O token aparece **só uma vez**. Copia na hora. E, de novo: nunca commita ele.
+
+### 🚀 Deploy em produção
+
+O site no ar usa quatro serviços, todos no plano gratuito:
+
+| Camada | Serviço | Observação |
+|---|---|---|
+| Frontend (Next.js) | [Vercel](https://vercel.com) | Root Directory = `frontend` |
+| Backend (Django API) | [Render](https://render.com) | Root Directory = `backend`; "dorme" após 15 min sem tráfego e acorda sozinho no próximo acesso (~30-60s) |
+| Banco de dados | [Neon](https://neon.com) (Postgres) | Free tier sem expiração |
+| Mídia (imagens dos projetos) | [Cloudinary](https://cloudinary.com) | Free tier de 25GB/mês |
+
+Não dá pra hospedar tudo no Vercel: as funções serverless dele têm disco efêmero, então SQLite e imagens enviadas pelo admin seriam perdidos a cada deploy/cold start — por isso o banco e o storage de mídia ficam em serviços externos.
 
 ### 🚫 Não esquece do `.gitignore`
 
@@ -200,7 +223,7 @@ project-name/
 
 You'll need:
 
-- Python 3.10+ and pip
+- Python 3.12+ and pip (Django 6 requires 3.12 or newer)
 - Node.js 18+ and npm
 - Git
 
@@ -289,8 +312,14 @@ DJANGO_SECRET_KEY=
 DJANGO_DEBUG=
 DJANGO_ALLOWED_HOSTS=
 CORS_ALLOWED_ORIGINS=
+CSRF_TRUSTED_ORIGINS=
+DATABASE_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=
+SPOTIFY_REDIRECT_URI=
 GITHUB_USERNAME=
 GITHUB_TOKEN=
 ```
@@ -303,8 +332,12 @@ What goes in each one:
 | `DJANGO_DEBUG` | `True` in development, `False` in production. |
 | `DJANGO_ALLOWED_HOSTS` | Allowed hosts. In dev: `localhost,127.0.0.1` |
 | `CORS_ALLOWED_ORIGINS` | Where the frontend can reach the backend from. In dev: `http://localhost:3000` |
+| `CSRF_TRUSTED_ORIGINS` | Only needed in production (HTTPS behind a proxy). Leave empty in dev. |
+| `DATABASE_URL` | Postgres connection string. Leave empty in dev — falls back to local SQLite automatically. |
+| `CLOUDINARY_CLOUD_NAME` / `_API_KEY` / `_API_SECRET` | [Cloudinary](https://cloudinary.com) credentials (media storage). Leave empty in dev — files go to local disk instead. |
 | `SPOTIFY_CLIENT_ID` | Your Spotify app ID (see below). |
 | `SPOTIFY_CLIENT_SECRET` | Your Spotify app secret (see below). |
+| `SPOTIFY_REDIRECT_URI` | Redirect URI registered on the Spotify app. In dev: `http://127.0.0.1:8000/api/spotify/callback/` |
 | `GITHUB_USERNAME` | Your GitHub username. |
 | `GITHUB_TOKEN` | Your GitHub personal access token (see below). |
 
@@ -335,6 +368,19 @@ What goes in each one:
 6. Put your username in `GITHUB_USERNAME`.
 
 > ⚠️ The token is shown **only once**. Copy it right away. And again: never commit it.
+
+### 🚀 Production deploy
+
+The live site runs across four free-tier services:
+
+| Layer | Service | Note |
+|---|---|---|
+| Frontend (Next.js) | [Vercel](https://vercel.com) | Root Directory = `frontend` |
+| Backend (Django API) | [Render](https://render.com) | Root Directory = `backend`; sleeps after 15 min idle and auto-wakes on the next request (~30-60s) |
+| Database | [Neon](https://neon.com) (Postgres) | Free tier, no expiry |
+| Media (project images) | [Cloudinary](https://cloudinary.com) | 25GB/month free tier |
+
+Everything can't live on Vercel alone: its serverless functions have an ephemeral filesystem, so SQLite and admin-uploaded images would be wiped on every deploy/cold start — that's why the database and media storage are external services.
 
 ### 🚫 Don't forget the `.gitignore`
 
