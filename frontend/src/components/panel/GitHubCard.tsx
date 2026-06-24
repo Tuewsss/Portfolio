@@ -74,7 +74,11 @@ export function GitHubCard({ profile }: GitHubCardProps) {
     };
   }, []);
 
-  const languages = stats ? Object.entries(stats.languages).slice(0, 5) : [];
+  const languages = stats
+    ? Object.entries(stats.languages)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 5)
+    : [];
   const username = usernameFromUrl(profile?.github_url);
 
   return (
