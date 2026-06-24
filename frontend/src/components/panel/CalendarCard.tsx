@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { GlassCard } from "@/components/GlassCard";
 import { useLanguage } from "@/components/providers/LanguageProvider";
-import { getCalendarEntries } from "@/lib/api";
+import { getCalendarEntries, getGitHubStats } from "@/lib/api";
 import type { CalendarEntry } from "@/types/portfolio";
 
 interface DayCell {
@@ -21,6 +21,16 @@ function dateKeyFor(year: number, month: number, day: number) {
   return `${year}-${pad(month + 1)}-${pad(day)}`;
 }
 
+// Faixas fixas (não relativas ao próprio histórico) pra intensidade ficar
+// previsível mesmo em meses com poucos dados ainda.
+function commitLevel(count: number) {
+  if (count <= 0) return 0;
+  if (count <= 2) return 1;
+  if (count <= 5) return 2;
+  if (count <= 9) return 3;
+  return 4;
+}
+
 export function CalendarCard() {
   const { t } = useLanguage();
   // A data real só existe no cliente; calculá-la direto no render causaria
@@ -29,6 +39,23 @@ export function CalendarCard() {
   const [viewYear, setViewYear] = useState<number | null>(null);
   const [viewMonth, setViewMonth] = useState<number | null>(null);
   const [entries, setEntries] = useState<Record<string, CalendarEntry>>({});
+  const [contributions, setContributions] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    getGitHubStats()
+      .then((data) => {
+        if (!cancelled) setContributions(data.contributions ?? {});
+      })
+      .catch(() => {
+        if (!cancelled) setContributions({});
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     const now = new Date();
@@ -129,17 +156,34 @@ export function CalendarCard() {
         ))}
         {cells.map((cell, i) => {
           const entry = cell.dateKey ? entries[cell.dateKey] : undefined;
+          const commitCount = cell.dateKey ? contributions[cell.dateKey] ?? 0 : 0;
+          const level = commitLevel(commitCount);
+          // Perto das bordas do grid (7 colunas) o tooltip centralizado vaza
+          // pra fora do card, que tem overflow:hidden — ancora pro lado de dentro.
+          const col = i % 7;
+          const tipEdge = col <= 1 ? "tip-left" : col >= 5 ? "tip-right" : "";
           return (
-            <span key={`day-${i}`} className="day-cell">
-              <span className={`day ${cell.muted ? "muted" : ""} ${cell.isToday ? "today" : ""}`}>
+            <span key={`day-${i}`} className={`day-cell ${tipEdge}`}>
+              <span
+                className={`day ${cell.muted ? "muted" : ""} ${cell.isToday ? "today" : ""} ${level > 0 ? `commit-${level}` : ""}`}
+              >
                 {cell.muted ? "" : cell.day}
               </span>
-              {entry && (
+              {(entry || commitCount > 0) && (
                 <>
-                  <span className="day-dot" />
+                  {entry && <span className="day-dot" />}
                   <div className="day-tooltip">
-                    <strong>{entry.title}</strong>
-                    {entry.description && <p>{entry.description}</p>}
+                    {entry && (
+                      <>
+                        <strong>{entry.title}</strong>
+                        {entry.description && <p>{entry.description}</p>}
+                      </>
+                    )}
+                    {commitCount > 0 && (
+                      <p>
+                        {commitCount} {commitCount === 1 ? t.panel.contributionOne : t.panel.contributionOther}
+                      </p>
+                    )}
                   </div>
                 </>
               )}

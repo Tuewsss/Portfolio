@@ -7,6 +7,24 @@ from django.utils import timezone
 from .models import GitHubStats
 
 API_BASE = "https://api.github.com"
+GRAPHQL_URL = "https://api.github.com/graphql"
+
+CONTRIBUTIONS_QUERY = """
+query($login: String!) {
+  user(login: $login) {
+    contributionsCollection {
+      contributionCalendar {
+        weeks {
+          contributionDays {
+            date
+            contributionCount
+          }
+        }
+      }
+    }
+  }
+}
+"""
 
 # Aproximação grosseira: o GitHub não expõe "linhas de código" pela API,
 # só bytes por linguagem. Esse valor é só pra converter bytes -> linhas estimadas.
@@ -64,10 +82,24 @@ def _get_languages(username, repo_name):
     return resp.json()
 
 
+def _get_contributions(username):
+    """Calendário de contribuições do último ano via GraphQL (não existe no REST)."""
+    resp = requests.post(
+        GRAPHQL_URL,
+        headers=_headers(),
+        json={"query": CONTRIBUTIONS_QUERY, "variables": {"login": username}},
+        timeout=15,
+    )
+    resp.raise_for_status()
+    weeks = resp.json()["data"]["user"]["contributionsCollection"]["contributionCalendar"]["weeks"]
+    return {day["date"]: day["contributionCount"] for week in weeks for day in week["contributionDays"]}
+
+
 def fetch_github_stats(username):
     repos = [r for r in _get_all_repos(username) if not r.get("fork")]
     total_commits = _get_total_commits(username)
     total_stars = sum(r.get("stargazers_count", 0) for r in repos)
+    contributions = _get_contributions(username)
 
     language_bytes = {}
     for repo in repos:
@@ -86,6 +118,7 @@ def fetch_github_stats(username):
         "total_stars": total_stars,
         "estimated_lines": total_bytes // BYTES_PER_LINE_ESTIMATE,
         "languages": languages_pct,
+        "contributions": contributions,
     }
 
 
@@ -98,6 +131,7 @@ def refresh_stats():
     stats.total_stars = data["total_stars"]
     stats.estimated_lines = data["estimated_lines"]
     stats.languages = data["languages"]
+    stats.contributions = data["contributions"]
     stats.save()
     return stats
 

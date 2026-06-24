@@ -85,6 +85,7 @@ export interface GitHubStats {
   total_stars: number;
   estimated_lines: number;
   languages: Record<string, number>;
+  contributions: Record<string, number>;
   updated_at: string | null;
 }
 

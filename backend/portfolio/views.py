@@ -115,6 +115,7 @@ def github_stats_view(request):
             "total_stars": stats.total_stars,
             "estimated_lines": stats.estimated_lines,
             "languages": stats.languages,
+            "contributions": stats.contributions,
             "updated_at": stats.updated_at,
         }
     )

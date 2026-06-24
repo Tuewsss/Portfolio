@@ -117,6 +117,8 @@ export const es: Dictionary = {
     stars: "estrellas",
     commits: "commits",
     calendar: "Calendario",
+    contributionOne: "contribución",
+    contributionOther: "contribuciones",
     weekdays: ["D", "L", "M", "X", "J", "V", "S"],
   },
   welcome: {

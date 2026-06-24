@@ -90,7 +90,15 @@ class SpotifyAuthAdmin(admin.ModelAdmin):
 @admin.register(GitHubStats)
 class GitHubStatsAdmin(admin.ModelAdmin):
     list_display = ["total_commits", "total_repos", "total_stars", "estimated_lines", "updated_at"]
-    readonly_fields = ["total_commits", "total_repos", "total_stars", "estimated_lines", "languages", "updated_at"]
+    readonly_fields = [
+        "total_commits",
+        "total_repos",
+        "total_stars",
+        "estimated_lines",
+        "languages",
+        "contributions",
+        "updated_at",
+    ]
 
     def has_add_permission(self, request):
         return False

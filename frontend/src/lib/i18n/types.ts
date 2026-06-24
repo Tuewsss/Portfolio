@@ -88,6 +88,8 @@ export interface Dictionary {
     stars: string;
     commits: string;
     calendar: string;
+    contributionOne: string;
+    contributionOther: string;
     weekdays: string[];
   };
   welcome: {

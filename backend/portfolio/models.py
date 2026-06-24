@@ -152,6 +152,11 @@ class GitHubStats(models.Model):
         default=0, help_text="Estimativa a partir dos bytes por linguagem (GitHub não expõe linhas reais)."
     )
     languages = models.JSONField(default=dict, help_text='Ex: {"Python": 45.2, "TypeScript": 30.1}')
+    contributions = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text='Mapa "AAAA-MM-DD" -> número de commits naquele dia, últimos ~12 meses (GitHub GraphQL).',
+    )
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
